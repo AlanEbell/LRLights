@@ -1,0 +1,10 @@
+ip address = 192.168.1.62
+mac address = 84:0D:8E:B8:AE:2E
+device name = TASMOTA-B8AE2E-3630
+username = 5thFarm
+password = 254613
+Host()
+Port(1883)
+Client(DVES_%06X)
+Topic(tasmota_%06X)
+Full Topic = %prefix%/%topic%/
