@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 
 # Replace with the appropriate values for your MQTT broker and smart plug
-MQTT_BROKER = "192.168.1.62"
+MQTT_BROKER = "127.0.0.1"
 MQTT_PORT = 1883
 MQTT_TOPIC = "tasmota_%06X"
 MQTT_USERNAME = "5thFarm"
