@@ -1,0 +1,12 @@
+[Unit]
+Description=Runs the 5th Farm lights program
+After=network.target
+
+[Service]
+User=pi
+ExecStart=/usr/local/bin/runlights.sh
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
