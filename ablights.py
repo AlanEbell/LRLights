@@ -2,6 +2,7 @@
 import tkinter as tk
 import requests
 import threading
+import time
 
 plugs = {'chair lamp': '192.168.1.62', 'table lamp': '192.168.1.68', 'livingroom 1': '192.168.1.70', 'livingroom 2': '192.168.1.71', 'piano room': '192.168.1.72', 'piano': '192.168.1.73', 'hallway': '192.168.1.74', 'plug8': '192.168.1.75', 'plug9': '192.168.1.76', 'plug10': '192.168.1.77'}
 
@@ -10,15 +11,16 @@ plugs = {'chair lamp': '192.168.1.62', 'table lamp': '192.168.1.68', 'livingroom
 buttons_intialized = False
 
 def run_initialize_buttons():
-    global buttons_intialized
-
-    if buttons_intialized ==True:
+    while True:
         initialize_buttons()
-        return
+        time.sleep(180)  # Sleep for 3 minutes
 
-    threading.Timer(180.0, run_initialize_buttons).start()
-    
-    button_intialized = True
+# Create a thread that will run the function
+initialization_thread = threading.Thread(target=run_initialize_buttons)
+
+# Start the thread
+initialization_thread.start()
+
 
 
 
