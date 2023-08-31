@@ -1,4 +1,4 @@
-#!/bin/bash/ python3
+#!/usr/bin/env python3
 import tkinter as tk
 import requests
 import threading
@@ -11,15 +11,8 @@ plugs = {'chair lamp': '192.168.1.62', 'table lamp': '192.168.1.68', 'livingroom
 buttons_intialized = False
 
 def run_initialize_buttons():
-    while True:
-        initialize_buttons()
-        time.sleep(180)  # Sleep for 3 minutes
-
-# Create a thread that will run the function
-initialization_thread = threading.Thread(target=run_initialize_buttons)
-
-# Start the thread
-initialization_thread.start()
+    initialize_buttons()
+    root.after(180000, run_initialize_buttons)  # Reschedule itself
 
 
 
@@ -71,8 +64,10 @@ root.title('5th Farm Light Application')
 root.geometry("800x480")
 
 buttons = {}
-initialize_buttons()
+
 run_initialize_buttons()
+
+root.after(180000, run_initialize_buttons)  # Time is in milliseconds
 
 def toggle_all(plug_range):
     for plug in plug_range:
