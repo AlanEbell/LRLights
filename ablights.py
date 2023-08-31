@@ -1,11 +1,30 @@
-#!/bin/bash python3
+#!/bin/bash/ python3
 import tkinter as tk
 import requests
+import threading
+
 plugs = {'chair lamp': '192.168.1.62', 'table lamp': '192.168.1.68', 'livingroom 1': '192.168.1.70', 'livingroom 2': '192.168.1.71', 'piano room': '192.168.1.72', 'piano': '192.168.1.73', 'hallway': '192.168.1.74', 'plug8': '192.168.1.75', 'plug9': '192.168.1.76', 'plug10': '192.168.1.77'}
 
 # ... (get_device_state and toggle_power functions)
 
+buttons_intialized = False
+
+def run_initialize_buttons():
+    global buttons_intialized
+
+    if buttons_intialized ==True:
+        initialize_buttons()
+        return
+
+    threading.Timer(180.0, run_initialize_buttons).start()
+    
+    button_intialized = True
+
+
+
 def initialize_buttons():
+    
+
     for i, (plug, ip) in enumerate(plugs.items()):
         device_state = get_device_state(ip)
         if device_state is not None:
@@ -16,7 +35,7 @@ def initialize_buttons():
         button = tk.Button(root, text=f"{plug}", width=10, height=6, bg=button_color, command=lambda plug=plug: toggle_power(plug))
         button.grid(row=i // 5, column=i % 5, padx=5, pady=5)
         buttons[plug] = button
-
+    
 # ... (rest of the code remains unchanged, except the for loop creating the buttons)
 
 def get_device_state(tasmota_ip):
@@ -51,6 +70,7 @@ root.geometry("800x480")
 
 buttons = {}
 initialize_buttons()
+run_initialize_buttons()
 
 def toggle_all(plug_range):
     for plug in plug_range:
