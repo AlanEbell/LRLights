@@ -15,8 +15,6 @@ def run_initialize_buttons():
     root.after(180000, run_initialize_buttons)  # Reschedule itself
 
 
-
-
 def initialize_buttons():
     
 
@@ -27,7 +25,7 @@ def initialize_buttons():
         else:
             button_color = "gray"
 
-        button = tk.Button(root, text=f"{plug}", width=10, height=6, bg=button_color, command=lambda plug=plug: toggle_power(plug))
+        button = tk.Button(root, text=f"{plug}", width=10, height=5, bg=button_color, command=lambda plug=plug: toggle_power(plug))
         button.grid(row=i // 5, column=i % 5, padx=5, pady=5)
         buttons[plug] = button
     
@@ -73,29 +71,53 @@ def toggle_all(plug_range):
     for plug in plug_range:
         toggle_power(plug)
 
-toggle1_5 = tk.Button(root, text="Toggle all", fg='white', width=10, height=6, bg="black", command=lambda: toggle_all(['chair lamp', 'table lamp', 'livingroom 1', 'livingroom 2', 'piano room']))
+toggle1_5 = tk.Button(root, text="Toggle all", fg='white', width=10, height=5, bg="black", command=lambda: toggle_all(['chair lamp', 'table lamp', 'livingroom 1', 'livingroom 2', 'piano room']))
 toggle1_5.grid(row=0, column=6, columnspan=5, padx=0, pady=0)
 
-toggle6_10 = tk.Button(root, text="Toggle all", fg='white', width=10, height=6, bg="black", command=lambda: toggle_all(['piano', 'hallway', 'plug8', 'plug9', 'plug10']))
+toggle6_10 = tk.Button(root, text="Toggle all", fg='white', width=10, height=5, bg="black", command=lambda: toggle_all(['piano', 'hallway', 'plug8', 'plug9', 'plug10']))
 toggle6_10.grid(row=1, column=6, columnspan=5, padx=0, pady=0)
+
+
 
 def toggle_group(plug_range):
     for plug in plug_range:
         toggle_power(plug)
 
+def turn_all_on():
+    for plug in plugs:
+        set_device_state(plugs[plug], 'ON')
+        buttons[plug].config(bg="light green")
+
+def turn_all_off():
+    for plug in plugs:
+        set_device_state(plugs[plug], 'OFF')
+        buttons[plug].config(bg="red")
+
+def set_device_state(tasmota_ip, state):
+    power_set_endpoint = f"http://{tasmota_ip}/cm?cmnd=Power%20{state}"
+    response = requests.get(power_set_endpoint)
+    if response.status_code == 200:
+        return True
+    return False
 
 
-
-groupbutton = tk.Button(root, text="Livingroom", width=20, height=6, bg="light blue", command=lambda: toggle_group(['livingroom 1', 'livingroom 2']))
+groupbutton = tk.Button(root, text="Livingroom", width=20, height=4, bg="#d94c00", command=lambda: toggle_group(['livingroom 1', 'livingroom 2']))
 groupbutton.grid(row=3, column=0, sticky='w', columnspan=20, padx=30, pady=0)
 
-groupbutton2 = tk.Button(root, text="Piano Room", width=20, height=6, bg="light blue", command=lambda: toggle_group(['livingroom 2', 'piano room', 'piano']))
+groupbutton2 = tk.Button(root, text="Piano Room", width=20, height=4, bg="#d94c00", command=lambda: toggle_group(['livingroom 2', 'piano room', 'piano']))
 groupbutton2.grid(row=3, column=2, sticky='w', columnspan=20, padx=30, pady=0)
 
-groupbutton3 = tk.Button(root, text="Dining Room", width=20, height=6, bg="light blue", command=lambda: toggle_group(['chair lamp', 'table lamp']))
+groupbutton3 = tk.Button(root, text="Dining Room", width=20, height=4, bg="#d94c00", command=lambda: toggle_group(['chair lamp', 'table lamp']))
 groupbutton3.grid(row=3, column=4, sticky='w', columnspan=20, padx=30, pady=0)
 
+all_on_button = tk.Button(root, text="ALL ON", width=20, height=5, bg="green", command=turn_all_on)
+all_on_button.grid(row=4, column=0, sticky='w', columnspan=20, padx=30, pady=0)
 
+all_off_button = tk.Button(root, text="ALL OFF", width=20, height=5, bg="red", command=turn_all_off)
+all_off_button.grid(row=4, column=2, sticky='w', columnspan=20, padx=30, pady=0)
+
+Refresh_button = tk.Button(root, text="Refresh", width=20, height=5, bg="#385976", command=initialize_buttons)
+Refresh_button.grid(row=4, column=4, sticky='w', columnspan=20, padx=30, pady=0)
 
 
 root.mainloop()

@@ -7,7 +7,7 @@ import requests
 class AndroidLights(toga.App):
 
     def startup(self):
-        print("Starting Class")
+      
          # Create "ALL ON" button
         all_on_button = toga.Button(
             'ALL ON',
@@ -134,8 +134,12 @@ class AndroidLights(toga.App):
     
 
 def main():
-    print("Starting app")
-    return AndroidLights()       
+        print("Starting app")
+        return AndroidLights()  
+
+
+if __name__ == '__main__':
+    main().app.main_loop()
 
 
 
