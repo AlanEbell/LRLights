@@ -1,6 +1,3 @@
-"""
-5th Farm Light App
-"""
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
@@ -10,7 +7,7 @@ import requests
 class AndroidLights(toga.App):
 
     def startup(self):
-        
+        print("Starting Class")
          # Create "ALL ON" button
         all_on_button = toga.Button(
             'ALL ON',
@@ -92,7 +89,7 @@ class AndroidLights(toga.App):
         endpoint = f"http://{tasmota_ip}/cm?cmnd=Power%20TOGGLE"
         
         try:
-            response = requests.get(endpoint)
+            response = requests.get(endpoint, timeout=2)  # 2 seconds timeout
             response.raise_for_status()
             device_state = self.get_device_state(tasmota_ip)
             if device_state == 'ON':
@@ -137,6 +134,7 @@ class AndroidLights(toga.App):
     
 
 def main():
+    print("Starting app")
     return AndroidLights()       
 
 
